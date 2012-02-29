@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="62">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <df name="source" root="../source">
+      <df name="App">
+        <df name="TAppDecoder">
+          <in>TAppDecCfg.cpp</in>
+          <in>TAppDecCfg.h</in>
+          <in>TAppDecTop.cpp</in>
+          <in>TAppDecTop.h</in>
+          <in>decmain.cpp</in>
+        </df>
+        <df name="TAppEncoder">
+          <in>TAppEncCfg.cpp</in>
+          <in>TAppEncCfg.h</in>
+          <in>TAppEncTop.cpp</in>
+          <in>TAppEncTop.h</in>
+          <in>encmain.cpp</in>
+        </df>
+        <df name="utils">
+          <df name="BitrateTargeting">
+            <in>ExtractBitrates.cpp</in>
+            <in>ExtractBitrates.h</in>
+            <in>ExtractBitratesMain.cpp</in>
+            <in>GuessLambdaModifiers.cpp</in>
+            <in>GuessLambdaModifiers.h</in>
+            <in>GuessLambdaModifiersMain.cpp</in>
+            <in>RuntimeError.h</in>
+          </df>
+          <in>annexBbytecount.cpp</in>
+          <in>convert_NtoMbit_YCbCr.cpp</in>
+        </df>
+      </df>
+      <df name="Lib">
+        <df name="libmd5">
+        </df>
+        <df name="TAppCommon">
+        </df>
+        <df name="TLibCommon">
+          <in>FileWriter.cpp</in>
+          <in>FileWriter.h</in>
+        </df>
+        <df name="TLibDecoder">
+        </df>
+        <df name="TLibEncoder">
+        </df>
+        <df name="TLibVideoIO">
+        </df>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>hm-pu-simulations-Makefile.mk</itemPath>
+      <itemPath>../build/linux/makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>../source</Elem>
+  </sourceRootList>
+  <projectmakefile>hm-pu-simulations-Makefile.mk</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>../build/linux</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f makefile</buildCommand>
+          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
+          <executablePath>../bin/TAppEncoderStatic</executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../source/Lib</pElem>
+              <pElem>../compat/msvc</pElem>
+            </incDir>
+          </cTool>
+          <ccTool>
+            <incDir>
+              <pElem>../source/Lib</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
