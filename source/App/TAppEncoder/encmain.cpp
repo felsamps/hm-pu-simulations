@@ -37,6 +37,7 @@
 
 #include <time.h>
 #include "TAppEncTop.h"
+#include "TLibCommon/FileWriter.h"
 
 //! \ingroup TAppEncoder
 //! \{
@@ -56,6 +57,10 @@ int main(int argc, char* argv[])
   fprintf( stdout, NVM_COMPILEDBY );
   fprintf( stdout, NVM_BITS );
   fprintf( stdout, "\n" );
+
+  //FELIPE BEGIN
+  FileWriter::init(PU_CHOICES_FILE, "outputs/pu_choices.txt");
+  FileWriter::print(PU_CHOICES_FILE, "First test for the FileWriter Class\n");
 
   // create application encoder class
   cTAppEncTop.create();
@@ -80,6 +85,9 @@ int main(int argc, char* argv[])
 
   // destroy application encoder class
   cTAppEncTop.destroy();
+
+  //FELIPE BEGIN
+  FileWriter::close(PU_CHOICES_FILE);
 
   return 0;
 }
