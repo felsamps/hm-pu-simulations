@@ -39,6 +39,7 @@
 #include "TEncTop.h"
 #include "TEncCu.h"
 #include "TEncAnalyze.h"
+#include "TLibCommon/FileWriter.h"
 
 #if QP_ADAPTATION
 #include <cmath>
@@ -491,8 +492,8 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 					xCheckRDCostMerge2Nx2N(rpcBestCU, rpcTempCU);
 					rpcTempCU->initEstData(uiDepth, iQP);
 				} else {
-					//Felipe
-					xCheckRDCostAMVPSkip(rpcBestCU, rpcTempCU);
+					//FELIPE BEGIN
+					//xCheckRDCostAMVPSkip(rpcBestCU, rpcTempCU);
 					rpcTempCU->initEstData(uiDepth, iQP);
 				}
 
@@ -711,6 +712,11 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 #endif
 			}
 
+			//FELIPE BEGIN
+			if (rpcBestCU->getSlice()->getSliceType() != I_SLICE) {
+				FileWriter::print(PU_CHOICES_FILE, "%d %d\n", rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
+			}
+			
 			// initialize PCM flag
 			rpcTempCU->setIPCMFlag(0, false);
 			rpcTempCU->setIPCMFlagSubParts(false, 0, uiDepth); //SUB_LCU_DQP

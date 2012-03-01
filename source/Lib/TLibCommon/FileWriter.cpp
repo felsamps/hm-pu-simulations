@@ -24,7 +24,7 @@ void FileWriter::print(int fn, const char* str, ...) {
 	char buffer[BUFSIZ];
 	va_start(args, str);
 	vsprintf(buffer, str, args);
-	fprintf(files[fn], "%s\n", buffer);
+	fprintf(files[fn], "%s", buffer);
 	va_end(args);
 }
 

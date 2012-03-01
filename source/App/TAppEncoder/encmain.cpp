@@ -60,7 +60,6 @@ int main(int argc, char* argv[])
 
   //FELIPE BEGIN
   FileWriter::init(PU_CHOICES_FILE, "outputs/pu_choices.txt");
-  FileWriter::print(PU_CHOICES_FILE, "First test for the FileWriter Class\n");
 
   // create application encoder class
   cTAppEncTop.create();
