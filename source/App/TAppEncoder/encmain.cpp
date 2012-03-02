@@ -38,6 +38,7 @@
 #include <time.h>
 #include "TAppEncTop.h"
 #include "TLibCommon/FileWriter.h"
+#include "TLibEncoder/StatsManager.h"
 
 //! \ingroup TAppEncoder
 //! \{
@@ -60,6 +61,7 @@ int main(int argc, char* argv[])
 
   //FELIPE BEGIN
   FileWriter::init(PU_CHOICES_FILE, "outputs/pu_choices.txt");
+  StatsManager::init();
 
   // create application encoder class
   cTAppEncTop.create();
@@ -86,6 +88,7 @@ int main(int argc, char* argv[])
   cTAppEncTop.destroy();
 
   //FELIPE BEGIN
+  FileWriter::print(PU_CHOICES_FILE,"%s", StatsManager::report().c_str());
   FileWriter::close(PU_CHOICES_FILE);
 
   return 0;

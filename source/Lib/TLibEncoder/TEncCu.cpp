@@ -40,6 +40,7 @@
 #include "TEncCu.h"
 #include "TEncAnalyze.h"
 #include "TLibCommon/FileWriter.h"
+#include "StatsManager.h"
 
 #if QP_ADAPTATION
 #include <cmath>
@@ -706,7 +707,6 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 
 					xCheckRDCostInter(rpcBestCU, rpcTempCU, SIZE_nRx2N);
 					rpcTempCU->initEstData(uiDepth, iQP);
-
 #endif
 				}
 #endif
@@ -714,7 +714,8 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 
 			//FELIPE BEGIN
 			if (rpcBestCU->getSlice()->getSliceType() != I_SLICE) {
-				FileWriter::print(PU_CHOICES_FILE, "%d %d\n", rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
+				//FileWriter::print(PU_CHOICES_FILE, "%d %d\n", rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
+				StatsManager::addPuChoice(rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
 			}
 			
 			// initialize PCM flag
