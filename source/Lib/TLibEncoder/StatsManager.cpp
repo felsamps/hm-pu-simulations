@@ -7,14 +7,21 @@
 
 
 #include <list>
+#include <iosfwd>
 
 #include "StatsManager.h"
+
 
 
 std::vector<Int> StatsManager::choices64;
 std::vector<Int> StatsManager::choices32;
 std::vector<Int> StatsManager::choices16;
 std::vector<Int> StatsManager::choices8;
+TComMv StatsManager::mv_NxN[4];
+UInt StatsManager::currIdx, StatsManager::currCUSize;
+Bool StatsManager::A, StatsManager::B, StatsManager::C, StatsManager::D;
+Bool StatsManager::a, StatsManager::b, StatsManager::c, StatsManager::d;
+PartSize StatsManager::currPartSize;
 
 StatsManager::StatsManager() {
 }
@@ -30,15 +37,15 @@ void StatsManager::init() {
 
 }
 
-void StatsManager::addPuChoice(Int size, PartSize part) {
+void StatsManager::addPuChoice() {
 	
-	if(size == 64) choices64[(int)part] += 1;
-	else if(size == 32) choices32[part] += 1;
-	else if(size == 16) choices16[part] += 1;
-	else if(size == 8) choices8[part] += 1;
+	if(currCUSize == 64) choices64[(int)currPartSize] += 1;
+	else if(currCUSize == 32) choices32[currPartSize] += 1;
+	else if(currCUSize == 16) choices16[currPartSize] += 1;
+	else if(currCUSize == 8) choices8[currPartSize] += 1;
 }
 
-std::string StatsManager::report() {
+std::string StatsManager::reportPUChoices() {
 	std::string returnable, size64("64;"), size32("32;"), size16("16;"), size8("8;");
 	returnable = "CUSize;2Nx2N;2NxN;Nx2N;NxN;2NxnU;2NxnD;nLx2N;nRx2N;\n";
 
@@ -59,4 +66,62 @@ std::string StatsManager::report() {
 	returnable += size8 + "\n";
 
 	return returnable;
+}
+
+void StatsManager::mergeMVs() {
+	A = (mv_NxN[0] == mv_NxN[1]) ? true : false;
+	B = (mv_NxN[0] == mv_NxN[2]) ? true : false;
+	C = (mv_NxN[1] == mv_NxN[3]) ? true : false;
+	D = (mv_NxN[2] == mv_NxN[3]) ? true : false;
+}
+
+std::string StatsManager::reportFastDecisionParams() {
+	std::string partitions[] = {"2Nx2N","2NxN","Nx2N","NxN","2NxnU","2NxnD","nLx2N","nRx2N","","","","","","","","NONE"};
+	std::string returnable;
+	char temp[10];
+
+	mergeMVs();
+
+	sprintf(temp,"%d %s ", currCUSize, partitions[currPartSize].c_str());
+	returnable.append(temp);
+
+	returnable += (A) ? "1" : "0";
+	returnable += (B) ? "1" : "0";
+	returnable += (C) ? "1" : "0";
+	returnable += (D) ? "1" : "0";
+
+	returnable += "\n";
+
+	return returnable;
+}
+
+void StatsManager::setMv(TComMv mv) {
+	mv_NxN[currIdx].setHor(mv.getHor());
+	mv_NxN[currIdx].setVer(mv.getVer());
+}
+TComMv StatsManager::getMv() {
+	return mv_NxN[currIdx];
+}
+
+void StatsManager::setCurrIdx(UInt idx) {
+	currIdx = idx;
+}
+UInt StatsManager::getCurrIdx() {
+	return currIdx;
+}
+
+void StatsManager::setCurrCUSize(UInt size) {
+	currCUSize = size;
+}
+
+UInt StatsManager::getCurrCUSize() {
+	return currCUSize;
+}
+
+void StatsManager::setCurrPartSize(PartSize part) {
+	currPartSize = part;
+}
+
+PartSize StatsManager::getCurrPartSize() {
+	return currPartSize;
 }

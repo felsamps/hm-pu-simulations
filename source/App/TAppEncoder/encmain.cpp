@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
 
   //FELIPE BEGIN
   FileWriter::init(PU_CHOICES_FILE, "outputs/pu_choices.txt");
+  FileWriter::init(PU_DECISION_PARAMS_FILE, "outputs/pu_params.txt");
   StatsManager::init();
 
   // create application encoder class
@@ -88,8 +89,9 @@ int main(int argc, char* argv[])
   cTAppEncTop.destroy();
 
   //FELIPE BEGIN
-  FileWriter::print(PU_CHOICES_FILE,"%s", StatsManager::report().c_str());
+  FileWriter::print(PU_CHOICES_FILE,"%s", StatsManager::reportPUChoices().c_str());
   FileWriter::close(PU_CHOICES_FILE);
+  FileWriter::close(PU_DECISION_PARAMS_FILE);
 
   return 0;
 }

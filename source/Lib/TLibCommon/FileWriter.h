@@ -11,9 +11,10 @@
 #include <cstdarg>
 #include <cstdio>
 
-#define NUM_FILES 1
+#define NUM_FILES 2
 
 #define PU_CHOICES_FILE 1
+#define PU_DECISION_PARAMS_FILE 2
 
 class FileWriter {
 

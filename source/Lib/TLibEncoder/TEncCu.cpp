@@ -541,14 +541,16 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 					if (!(rpcBestCU->getSlice()->getSPS()->getDisInter4x4() && (rpcBestCU->getWidth(0) == 8) && (rpcBestCU->getHeight(0) == 8))) {
 #endif
 #if CBF_FAST_MODE
-						if (uiDepth == g_uiMaxCUDepth - g_uiAddCUDepth && doNotBlockPu)
+						//FELIPE BEGIN
+						//the NxN must be enabled for all CU sizes...
+						//if (uiDepth == g_uiMaxCUDepth - g_uiAddCUDepth && doNotBlockPu)
 #else
 						if (uiDepth == g_uiMaxCUDepth - g_uiAddCUDepth)
 #endif
-						{
+						//{
 							xCheckRDCostInter(rpcBestCU, rpcTempCU, SIZE_NxN);
 							rpcTempCU->initEstData(uiDepth, iQP);
-						}
+						//}
 #if DISABLE_4x4_INTER
 					}
 #endif
@@ -711,11 +713,15 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 				}
 #endif
 			}
-
+			
 			//FELIPE BEGIN
+			StatsManager::setCurrCUSize(rpcBestCU->getWidth(0));
+			StatsManager::setCurrPartSize(rpcBestCU->getPartitionSize(0));
 			if (rpcBestCU->getSlice()->getSliceType() != I_SLICE) {
 				//FileWriter::print(PU_CHOICES_FILE, "%d %d\n", rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
-				StatsManager::addPuChoice(rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
+				StatsManager::addPuChoice();
+				FileWriter::print(PU_DECISION_PARAMS_FILE, "%s", StatsManager::reportFastDecisionParams().c_str());
+
 			}
 			
 			// initialize PCM flag

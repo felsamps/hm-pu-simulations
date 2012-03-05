@@ -39,6 +39,8 @@
 #include "TLibCommon/TComRom.h"
 #include "TLibCommon/TComMotionInfo.h"
 #include "TEncSearch.h"
+#include "StatsManager.h"
+#include "TLibCommon/FileWriter.h"
 #include <math.h>
 
 //! \ingroup TLibEncoder
@@ -3542,6 +3544,14 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
     rcMv = *pcMvPred;
     xPatternSearchFast  ( pcCU, pcPatternKey, piRefY, iRefStride, &cMvSrchRngLT, &cMvSrchRngRB, rcMv, ruiCost );
   }
+
+  //FELIPE BEGIN
+  if( pcCU->getPartitionSize(0) == SIZE_NxN ) {
+	  StatsManager::setCurrIdx(iPartIdx);
+	  StatsManager::setMv(rcMv);
+	  FileWriter::print(PU_DECISION_PARAMS_FILE, "%d (%d,%d)\n", iPartIdx, StatsManager::getMv().getHor(), StatsManager::getMv().getVer());
+	  
+  }
   
   m_pcRdCost->getMotionCost( 1, 0 );
   m_pcRdCost->setCostScale ( 1 );
@@ -3619,6 +3629,8 @@ Void TEncSearch::xPatternSearch( TComPattern* pcPatternKey, Pel* piRefY, Int iRe
       m_cDistParam.iSubShift = 1;
     }
   }
+
+  
   
   piRefY += (iSrchRngVerTop * iRefStride);
   for ( Int y = iSrchRngVerTop; y <= iSrchRngVerBottom; y++ )
@@ -3649,7 +3661,7 @@ Void TEncSearch::xPatternSearch( TComPattern* pcPatternKey, Pel* piRefY, Int iRe
   }
   
   rcMv.set( iBestX, iBestY );
-  
+
   ruiSAD = uiSadBest - m_pcRdCost->getCost( iBestX, iBestY );
   return;
 }
