@@ -31,3 +31,7 @@ void FileWriter::print(int fn, const char* str, ...) {
 void FileWriter::close(int fn) {
 	fclose(files[fn]);
 }
+
+FILE* FileWriter::getFile(int fn) {
+	return files[fn];
+}

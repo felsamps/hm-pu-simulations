@@ -26,6 +26,7 @@ public:
     static void init(int fn, std::string name);
     static void print(int fn, const char* str, ...);
     static void close(int fn);
+    static FILE* getFile(int fn);
     
 };
 

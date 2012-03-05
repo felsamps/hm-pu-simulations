@@ -717,11 +717,13 @@ Void TEncCu::xCompressCU(TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt ui
 			//FELIPE BEGIN
 			StatsManager::setCurrCUSize(rpcBestCU->getWidth(0));
 			StatsManager::setCurrPartSize(rpcBestCU->getPartitionSize(0));
+			StatsManager::setCurrCU(m_ppcOrigYuv[uiDepth]->getLumaAddr());
+			StatsManager::setCuStride(m_ppcOrigYuv[uiDepth]->getStride());
 			if (rpcBestCU->getSlice()->getSliceType() != I_SLICE) {
 				//FileWriter::print(PU_CHOICES_FILE, "%d %d\n", rpcBestCU->getWidth(0), rpcBestCU->getPartitionSize(0));
 				StatsManager::addPuChoice();
 				FileWriter::print(PU_DECISION_PARAMS_FILE, "%s", StatsManager::reportFastDecisionParams().c_str());
-
+				
 			}
 			
 			// initialize PCM flag

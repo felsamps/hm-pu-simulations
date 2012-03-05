@@ -16,12 +16,19 @@
 #include "TLibCommon/TComMv.h"
 
 class StatsManager {
+    //fast pu decision parameters
     static TComMv mv_NxN[4];
     static UInt currCUSize, currIdx;
     static PartSize currPartSize;
     static Bool A, B, C, D;
     static Bool a, b, c, d;
+    static Pel* currCU;
+    static UInt cuStride;
+    
+    
+    //PU choices statistics
     static std::vector<Int> choices64, choices32, choices16, choices8;
+
 
 public:
     StatsManager();
@@ -30,6 +37,7 @@ public:
     static void clearFastDecisionParams();
     static std::string reportPUChoices();
     static std::string reportFastDecisionParams();
+    static std::string currCUToString();
 
     static void mergeMVs();
 
@@ -44,7 +52,12 @@ public:
 
     static void setCurrPartSize(PartSize part);
     static PartSize getCurrPartSize();
+
+    static void setCurrCU(Pel* cu);
+    static Pel* getCurrCU();
     
+    static void setCuStride(UInt cu);
+    static UInt getCuStride();
 };
 
 #endif	/* _STATSMANAGER_H */

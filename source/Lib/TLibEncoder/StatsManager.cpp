@@ -10,6 +10,7 @@
 #include <iosfwd>
 
 #include "StatsManager.h"
+#include "TLibCommon/FileWriter.h"
 
 
 
@@ -22,6 +23,8 @@ UInt StatsManager::currIdx, StatsManager::currCUSize;
 Bool StatsManager::A, StatsManager::B, StatsManager::C, StatsManager::D;
 Bool StatsManager::a, StatsManager::b, StatsManager::c, StatsManager::d;
 PartSize StatsManager::currPartSize;
+Pel* StatsManager::currCU;
+UInt StatsManager::cuStride;
 
 StatsManager::StatsManager() {
 }
@@ -95,6 +98,28 @@ std::string StatsManager::reportFastDecisionParams() {
 	return returnable;
 }
 
+std::string StatsManager::currCUToString() {
+	Pel* org = currCU;
+	std::string returnable;
+	char temp[10];
+	
+	for (int y = 0; y < currCUSize; y++) {
+		returnable.clear();
+		for (int x = 0; x < currCUSize; x++) {
+			sprintf(temp, "%d", org[x]);
+			returnable.append(temp);
+			returnable += " ";
+		}
+		org += cuStride;
+		returnable += "\n";
+		fprintf(FileWriter::getFile(PU_DECISION_PARAMS_FILE),"%s", returnable.c_str());
+	}
+
+	
+	return returnable;
+
+}
+
 void StatsManager::setMv(TComMv mv) {
 	mv_NxN[currIdx].setHor(mv.getHor());
 	mv_NxN[currIdx].setVer(mv.getVer());
@@ -124,4 +149,18 @@ void StatsManager::setCurrPartSize(PartSize part) {
 
 PartSize StatsManager::getCurrPartSize() {
 	return currPartSize;
+}
+
+void StatsManager::setCurrCU(Pel* cu) {
+	currCU = cu;
+}
+
+Pel* StatsManager::getCurrCU() {
+	return currCU;
+}
+void StatsManager::setCuStride(UInt cu) {
+	cuStride = cu;
+}
+UInt StatsManager::getCuStride() {
+	return cuStride;
 }
